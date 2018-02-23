@@ -79,23 +79,21 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 
 </pre>
 <pre id="title">
-____    __    ____  ___       __       _______   ______       _______  __    __  .__   __.
-\   \  /  \  /   / /   \     |  |     |       \ /  __  \     |   ____||  |  |  | |  \ |  |
- \   \/    \/   / /  ^  \    |  |     |  .--.  |  |  |  |    |  |__   |  |  |  | |   \|  |
-  \            / /  /_\  \   |  |     |  |  |  |  |  |  |    |   __|  |  |  |  | |  . `  |
-   \    /\    / /  _____  \  |  `----.|  '--'  |  `--'  |  __|  |     |  `--'  | |  |\   |
-    \__/  \__/ /__/     \__\ |_______||_______/ \______/  (__)__|      \______/  |__| \__|
+ __       __    _______  __    __  .___________..__   __.  __  .__   __.   _______
+|  |     |  |  /  _____||  |  |  | |           ||  \ |  | |  | |  \ |  |  /  _____|
+|  |     |  | |  |  __  |  |__|  | `---|  |----`|   \|  | |  | |   \|  | |  |  __
+|  |     |  | |  | |_ | |   __   |     |  |     |  . `  | |  | |  . `  | |  | |_ |
+|  `----.|  | |  |__| | |  |  |  |     |  |     |  |\   | |  | |  |\   | |  |__| |
+|_______||__|  \______| |__|  |__|     |__|     |__| \__| |__| |__| \__|  \______|
 </pre>
 </div>
 
 <pre><h4>Info node:</h4></pre>
-<pre id="info">
+<pre id="url">
 </pre>
 
-<pre><h4>Follow Waldo:</h4></pre>
-<pre>
-  <a href="http://recksplorer.waldo.fun">Recksplorer</a>   <a href="http://shop.waldo.fun">Lightning Shop</a>   <a href="https://www.robtex.com/lightning/node/0392e78c508987c97de70b2474493e9b0dbbd0dcad69dec2648d686701da1df44a">Robtex</a>
-  <a href="https://github.com/lvaccaro/waldo-stats">Fork on Github</a>   <a href="https://twitter.com/0xVaccaro">Twitter</a>
+<pre><h4>Info node:</h4></pre>
+<pre id="info">
 </pre>
 
 <pre><h4>Direct channels:</h4></pre>
@@ -108,152 +106,161 @@ ____    __    ____  ___       __       _______   ______       _______  __    __ 
 
 <script>
 
+    // Configs
+    var url = "http://btctest.waldo.fun:4000"; // your server url
+    var alias = "Waldo.fun"; // your node name
+
+    // Init calls
+    printUrl(url);
     getinfo();
 
-
-function getinfo() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://waldo.fun:4000/getinfo", true);
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === this.DONE) {
-
-            //console.log(xhttp.responseText);
-            info = JSON.parse(xhttp.responseText);
-            info.alias = "Waldo.fun";
-            printInfo(info);
-            listpeers();
+    // Functions
+        function getinfo() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url+"/getinfo", true);
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === this.DONE) {
+                    //console.log(xhttp.responseText);
+                    info = JSON.parse(xhttp.responseText);
+                    info.alias = alias;
+                    printInfo(info);
+                    listpeers();
+                }
+            }
+            xhttp.onerror = function (e) {
+                console.error(xhr.statusText);
+            };
+            xhttp.send();
         }
-    }
-    xhttp.onerror = function (e) {
-        console.error(xhr.statusText);
-    };
-    xhttp.send();
-}
 
-function listpeers() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://waldo.fun:4000/listpeers", true);
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === this.DONE) {
+        function listpeers() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url+"/listpeers", true);
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === this.DONE) {
 
-            //console.log(xhttp.responseText);
-            peers = JSON.parse(xhttp.responseText).peers;
-            //printPeers(peers);
+                    //console.log(xhttp.responseText);
+                    peers = JSON.parse(xhttp.responseText).peers;
+                    //printPeers(peers);
 
-            var channels = [];
-            peers.forEach(function (p) {
-                if (p.channels) {
-                    p.channels.forEach(function (c) {
-                        c.id = p.id;
-                        channels.push(c);
+                    var channels = [];
+                    peers.forEach(function (p) {
+                        if (p.channels) {
+                            p.channels.forEach(function (c) {
+                                c.id = p.id;
+                                channels.push(c);
+                            });
+                        }
+                    });
+                    //printChannels(channels);
+
+                    listnodes(function (nodes) {
+                        nodes.forEach(function (n) {
+                            channels.forEach(function (c) {
+                                if (n.nodeid == c.id) {
+                                    c.alias = n.alias;
+                                }
+                            });
+                            peers.forEach(function (p) {
+                                if (n.nodeid == p.id) {
+                                    p.alias = n.alias;
+                                }
+                            });
+                        });
+
+                        printPeers(peers);
+                        printChannels(channels);
                     });
                 }
-            });
-            //printChannels(channels);
+            }
+            xhttp.onerror = function (e) {
+                console.error(xhr.statusText);
+            };
+            xhttp.send();
+        }
 
-            listnodes(function(nodes){
-                nodes.forEach(function (n) {
-                    channels.forEach(function (c) {
-                        if (n.nodeid == c.id) {
-                            c.alias = n.alias;
-                        }
-                    });
-                    peers.forEach(function (p) {
-                        if (n.nodeid == p.id) {
-                            p.alias = n.alias;
-                        }
-                    });
-                });
 
-                printPeers(peers);
-                printChannels(channels);
+        function listnodes(callback) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url+"/listnodes", true);
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === this.DONE) {
+
+                    //console.log(xhttp.responseText);
+                    nodes = JSON.parse(xhttp.responseText).nodes;
+                    callback(nodes);
+                }
+            }
+            xhttp.onerror = function (e) {
+                console.error(xhr.statusText);
+            };
+            xhttp.send();
+        }
+
+
+        function printUrl(url) {
+            var tag = document.getElementById("url");
+            tag.innerHTML = url;
+        }
+
+        function printInfo(info) {
+            var tag = document.getElementById("info");
+            tag.innerHTML = "";
+            var address;
+            if (info.address && info.address.length > 0 && info.address[0].address)
+                address = info.address[0].address;
+
+            tag.innerHTML = "\tnodeid: " + info.id + "\n" +
+                "\taddress: " + ((address) ? address : '') + "\n" +
+                "\tport: " + info.port + "\n" +
+                "\talias: " + info.alias + "\n" +
+                "\tversion: " + info.version + "\n" +
+                "\tblockheight: " + info.blockheight + "\n" +
+                "\tnetwork: " + info.network + "\n";
+        }
+
+
+        function printPeers(peers) {
+            var tag = document.getElementById("peers");
+            tag.innerHTML = "";
+            peers.forEach(function (p) {
+                tag.innerHTML += "\tnodeid: " + p.id + "\n" +
+                    ((p.alias) ? ("\talias: " + p.alias + "\n") : "") +
+                    "\tconnected: " + p.connected + "\n" +
+                    "\tstate: " + ((p.state) ? p.state : "NORMAL") + "\n" +
+                    "\tchannels: " + ((p.channels) ? p.channels.length : 0) + "\n\n";
             });
         }
-    }
-    xhttp.onerror = function (e) {
-        console.error(xhr.statusText);
-    };
-    xhttp.send();
-}
 
 
-    function listnodes(callback) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "http://waldo.fun:4000/listnodes", true);
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === this.DONE) {
+        function printChannels(channels) {
+            var tag = document.getElementById("channels");
+            tag.innerHTML = "";
 
-                //console.log(xhttp.responseText);
-                nodes = JSON.parse(xhttp.responseText).nodes;
-                callback(nodes);
-            }
+            var count = 0, capacityTotal = 0, capacityUs = 0;
+            channels.forEach(function (c) {
+                if (c.state == "CHANNELD_NORMAL") {
+                    count++;
+                    capacityUs += c.msatoshi_to_us;
+                    capacityTotal += c.msatoshi_total;
+
+                }
+            });
+            tag.innerHTML += "Num channels : " + count + "\n";
+            tag.innerHTML += "Your channel-side capacity : " + capacityUs + " msatoshi\n";
+            tag.innerHTML += "Total capacity in channels : " + capacityTotal + " msatoshi\n\n";
+
+            channels.forEach(function (c) {
+                tag.innerHTML +=
+                    "\tchannelid: " + ((c.short_channel_id) ? c.short_channel_id : '') + "\n" +
+                    "\tnodeid: " + c.id + "\n" +
+                    ((c.alias) ? ("\talias: " + c.alias + "\n") : "") +
+                    "\tfunding_txid: " + c.funding_txid + "\n" +
+                    "\tstate: " + c.state + "\n" +
+                    "\tmsatoshi: " + c.msatoshi_to_us + "/" + c.msatoshi_total + "\n" +
+                    "\tto_self_delay: " + c.to_self_delay + "\n\n";
+            });
         }
-        xhttp.onerror = function (e) {
-            console.error(xhr.statusText);
-        };
-        xhttp.send();
-    }
-
-
-    function printInfo(info){
-        var tag = document.getElementById("info");
-        tag.innerHTML = "";
-        var address;
-        if (info.address && info.address.length>0 && info.address[0].address)
-            address = info.address[0].address;
-
-        tag.innerHTML = "\tnodeid: " + info.id+ "\n" +
-            "\taddress: " + ((address)?address:'')+ "\n"+
-            "\tport: " + info.port+ "\n"+
-            "\talias: " + info.alias + "\n"+
-            "\tversion: " + info.version+ "\n"+
-            "\tblockheight: " + info.blockheight+ "\n"+
-            "\tnetwork: " + info.network+ "\n";
-    }
-
-
-    function printPeers(peers){
-        var tag = document.getElementById("peers");
-        tag.innerHTML = "";
-        peers.forEach(function (p) {
-            tag.innerHTML += "\tnodeid: " + p.id + "\n" +
-                ((p.alias)?("\talias: " + p.alias + "\n"):"") +
-                "\tconnected: " + p.connected + "\n" +
-                "\tstate: " + ((p.state) ? p.state : "NORMAL") + "\n" +
-                "\tchannels: " + ((p.channels) ? p.channels.length : 0) + "\n\n";
-        });
-    }
-
-
-    function printChannels(channels){
-        var tag = document.getElementById("channels");
-        tag.innerHTML = "";
-
-        var count=0, capacityTotal=0, capacityUs=0;
-        channels.forEach(function (c) {
-            if (c.state == "CHANNELD_NORMAL"){
-                count++;
-                capacityUs += c.msatoshi_to_us;
-                capacityTotal += c.msatoshi_total;
-
-            }
-        });
-        tag.innerHTML += "Num channels : "+count+"\n";
-        tag.innerHTML += "Your channel-side capacity : " + capacityUs+" msatoshi\n";
-        tag.innerHTML += "Total capacity in channels : " + capacityTotal+" msatoshi\n\n";
-
-        channels.forEach(function (c) {
-            tag.innerHTML +=
-                "\tchannelid: " + ((c.short_channel_id)?c.short_channel_id:'') + "\n" +
-                "\tnodeid: " + c.id + "\n" +
-                ((c.alias)?("\talias: " + c.alias + "\n"):"") +
-                "\tfunding_txid: " + c.funding_txid + "\n" +
-                "\tstate: " + c.state + "\n" +
-                "\tmsatoshi: " + c.msatoshi_to_us + "/" + c.msatoshi_total + "\n" +
-                "\tto_self_delay: " + c.to_self_delay + "\n\n";
-        });
-    }
-
 
 </script>
 
