@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const LightningClient = require('lightning-client');
-const client = new LightningClient(process.env.LIGHTNINGDIR || '/root/.lightning', true);
+const client = new LightningClient(process.env.LIGHTNINGDIR || '~/.lightning', true);
 
 /* GET home page. */
 router.get('/getinfo', function(req, res, next) {
