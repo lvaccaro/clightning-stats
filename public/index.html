@@ -211,7 +211,6 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
             var address;
             if (info.address && info.address.length > 0 && info.address[0].address)
                 address = info.address[0].address;
-
             tag.innerHTML = "\tnodeid: " + info.id + "\n" +
                 "\taddress: " + ((address) ? address : '') + "\n" +
                 "\tport: " + info.port + "\n" +
@@ -219,6 +218,9 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                 "\tversion: " + info.version + "\n" +
                 "\tblockheight: " + info.blockheight + "\n" +
                 "\tnetwork: " + info.network + "\n";
+            if ("undefined" !== typeof (address)){
+                tag.innerHTML += "\tURI: " + info.id + "@" + address + ":" + info.port + "\n";
+            }
         }
 
 
