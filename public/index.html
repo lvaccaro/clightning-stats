@@ -208,7 +208,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
         function printInfo(info) {
             var tag = document.getElementById("info");
             tag.innerHTML = "";
-            var address;
+            var address = null;
             if (info.address && info.address.length > 0 && info.address[0].address)
                 address = info.address[0].address;
 
@@ -219,6 +219,9 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                 "\tversion: " + info.version + "\n" +
                 "\tblockheight: " + info.blockheight + "\n" +
                 "\tnetwork: " + info.network + "\n";
+            if (null !== address){
+                tag.innerHTML += "\tURI: " + info.id + "@" + address + ":" + info.port + "\n";
+            }
         }
 
 
