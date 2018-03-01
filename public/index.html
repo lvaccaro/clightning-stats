@@ -205,6 +205,22 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
             tag.innerHTML = url;
         }
 
+        function newaddr (){
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url+"/newaddr", true);
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === this.DONE) {
+                    const address = JSON.parse(xhttp.responseText).address;
+                    const aDOM = document.getElementById ('address');
+                    aDOM.textContent = address;
+                }
+            }
+            xhttp.onerror = function (e) {
+                console.error(xhr.statusText);
+            };
+            xhttp.send();
+        }
+
         function printInfo(info) {
             var tag = document.getElementById("info");
             tag.innerHTML = "";
@@ -221,6 +237,9 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
             if ("undefined" !== typeof (address)){
                 tag.innerHTML += "\tURI: " + info.id + "@" + address + ":" + info.port + "\n";
             }
+            tag.innerHTML += "\tAddress: <span id='address'></span>\n";
+            tag.innerHTML += "\t<button id='newaddr' onclick='newaddr()'>NewAddr</button>";
+            setTimeout (newaddr, 1);
         }
 
 
