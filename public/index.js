@@ -4,14 +4,32 @@
 
 // Configs
 const url = 'http://btctest.waldo.fun:4000'; // Your server url
-const alias = 'Waldo.fun'; // Your node name
 
 // Init calls
 printUrl(url);
+listconfigs();
 getinfo();
-devListAddrs(printDevListAddrs);
+listpeers();
+devListAddrs();
 
 // Functions
+
+function listconfigs(callback) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url + '/listconfigs', true);
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === this.DONE) {
+            // Console.log(xhttp.responseText);
+            const configs = JSON.parse(xhttp.responseText);
+            printConfigs(configs);
+        }
+    };
+    xhttp.addEventListener('error', () => {
+        console.error(xhttp.statusText);
+	});
+    xhttp.send();
+}
+
 function getinfo() {
 	const xhttp = new XMLHttpRequest();
 	xhttp.open('GET', url + '/getinfo', true);
@@ -21,7 +39,6 @@ function getinfo() {
 			const info = JSON.parse(xhttp.responseText);
 			info.alias = alias;
 			printInfo(info);
-			listpeers();
 		}
 	};
 	xhttp.addEventListener('error', () => {
@@ -91,14 +108,14 @@ function listnodes(callback) {
 	xhttp.send();
 }
 
-function devListAddrs(callback) {
+function devListAddrs() {
 	const xhttp = new XMLHttpRequest();
 	xhttp.open('GET', url + '/dev-listaddrs', true);
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === this.DONE) {
 			// Console.log(xhttp.responseText);
 			const addresses = JSON.parse(xhttp.responseText).addresses;
-			callback(addresses);
+            printDevListAddrs(addresses);
 		}
 	};
 	xhttp.addEventListener('error', () => {
@@ -112,6 +129,17 @@ function printUrl(url) {
 	tag.innerHTML = url;
 }
 
+function printConfigs(configs) {
+    const tag = document.getElementById('configs');
+    tag.innerHTML = '\talias: ' + configs.alias + '\n' +
+        '\trgb: ' + configs.rgb + '\n' +
+        '\tlocktime-blocks: ' + configs.locktime-blocks + '\n' +
+        '\tcommit-fee: ' + configs.commit-fee + '\n' +
+        '\tdefault-fee-rate: ' + configs.default-fee-rate + '\n' +
+        '\tfee-base: ' + configs.fee-base + '\n' +
+        '\tfee-per-satoshi: ' + configs.fee-per-satoshi + '\n';
+}
+
 function printInfo(info) {
 	const tag = document.getElementById('info');
 	tag.innerHTML = '';
@@ -122,7 +150,6 @@ function printInfo(info) {
 	tag.innerHTML = '\tnodeid: ' + info.id + '\n' +
         '\taddress: ' + ((address) ? address : '') + '\n' +
         '\tport: ' + info.port + '\n' +
-        '\talias: ' + info.alias + '\n' +
         '\tversion: ' + info.version + '\n' +
         '\tblockheight: ' + info.blockheight + '\n' +
         '\tnetwork: ' + info.network + '\n';

@@ -22,6 +22,12 @@ router.get('/listnodes', function(req, res, next) {
 .catch(err => {res.status(500);});
 });
 
+router.get('/listconfigs', function(req, res, next) {
+    client.listconfigs()
+        .then(configs => {res.status(200).send(configs);})
+.catch(err => {res.status(500);});
+});
+
 router.get('/dev-listaddrs', function(req, res, next) {
     client.devListaddrs()
         .then(object => {
