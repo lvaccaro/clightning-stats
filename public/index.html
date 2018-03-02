@@ -127,7 +127,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
             xhttp.onreadystatechange = function () {
                 if (this.readyState === this.DONE) {
                     //console.log(xhttp.responseText);
-                    info = JSON.parse(xhttp.responseText);
+                    const info = JSON.parse(xhttp.responseText);
                     info.alias = alias;
                     printInfo(info);
                     listpeers();
@@ -146,7 +146,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                 if (this.readyState === this.DONE) {
 
                     //console.log(xhttp.responseText);
-                    peers = JSON.parse(xhttp.responseText).peers;
+                    const peers = JSON.parse(xhttp.responseText).peers;
                     //printPeers(peers);
 
                     var channels = [];
@@ -210,7 +210,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                 if (this.readyState === this.DONE) {
 
                     //console.log(xhttp.responseText);
-                    addresses = JSON.parse(xhttp.responseText).addresses;
+                    const addresses = JSON.parse(xhttp.responseText).addresses;
                     callback(addresses);
                 }
             }
