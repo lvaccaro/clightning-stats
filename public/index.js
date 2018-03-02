@@ -14,20 +14,20 @@ devListAddrs();
 
 // Functions
 
-function listconfigs(callback) {
-    const xhttp = new XMLHttpRequest();
-    xhttp.open('GET', url + '/listconfigs', true);
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === this.DONE) {
-            // Console.log(xhttp.responseText);
-            const configs = JSON.parse(xhttp.responseText);
-            printConfigs(configs);
-        }
-    };
-    xhttp.addEventListener('error', () => {
-        console.error(xhttp.statusText);
+function listconfigs() {
+	const xhttp = new XMLHttpRequest();
+	xhttp.open('GET', url + '/listconfigs', true);
+	xhttp.onreadystatechange = function () {
+		if (this.readyState === this.DONE) {
+			// Console.log(xhttp.responseText);
+			const configs = JSON.parse(xhttp.responseText);
+			printConfigs(configs);
+		}
+	};
+	xhttp.addEventListener('error', () => {
+		console.error(xhttp.statusText);
 	});
-    xhttp.send();
+	xhttp.send();
 }
 
 function getinfo() {
@@ -37,7 +37,6 @@ function getinfo() {
 		if (this.readyState === this.DONE) {
 			// Console.log(xhttp.responseText);
 			const info = JSON.parse(xhttp.responseText);
-			info.alias = alias;
 			printInfo(info);
 		}
 	};
@@ -130,14 +129,14 @@ function printUrl(url) {
 }
 
 function printConfigs(configs) {
-    const tag = document.getElementById('configs');
-    tag.innerHTML = '\talias: ' + configs.alias + '\n' +
+	const tag = document.getElementById('configs');
+	tag.innerHTML = '\talias: ' + configs.alias + '\n' +
         '\trgb: ' + configs.rgb + '\n' +
-        '\tlocktime-blocks: ' + configs.locktime-blocks + '\n' +
-        '\tcommit-fee: ' + configs.commit-fee + '\n' +
-        '\tdefault-fee-rate: ' + configs.default-fee-rate + '\n' +
-        '\tfee-base: ' + configs.fee-base + '\n' +
-        '\tfee-per-satoshi: ' + configs.fee-per-satoshi + '\n';
+        '\tlocktime-blocks: ' + configs['locktime-blocks'] + '\n' +
+        '\tcommit-fee: ' + configs['commit-fee'] + '\n' +
+        '\tdefault-fee-rate: ' + configs['default-fee-rate'] + '\n' +
+        '\tfee-base: ' + configs['fee-base'] + '\n' +
+        '\tfee-per-satoshi: ' + configs['fee-per-satoshi'] + '\n';
 }
 
 function printInfo(info) {
