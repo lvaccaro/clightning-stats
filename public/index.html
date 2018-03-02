@@ -93,6 +93,10 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 <pre id="info">
 </pre>
 
+<pre><h4>Addresses:</h4></pre>
+<pre id="addresses">
+</pre>
+
 <pre><h4>Direct channels:</h4></pre>
 <pre id="channels">
 </pre>
@@ -107,7 +111,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 </pre>
 
 <script>
-
+'use strict';
     // Configs
     var url = "http://btctest.waldo.fun:4000"; // your server url
     var alias = "Waldo.fun"; // your node name
@@ -115,6 +119,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
     // Init calls
     printUrl(url);
     getinfo();
+    devListAddrs (print_devListAddrs);
 
     // Functions
         function getinfo() {
@@ -189,8 +194,25 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                 if (this.readyState === this.DONE) {
 
                     //console.log(xhttp.responseText);
-                    nodes = JSON.parse(xhttp.responseText).nodes;
+                    const nodes = JSON.parse(xhttp.responseText).nodes;
                     callback(nodes);
+                }
+            }
+            xhttp.onerror = function (e) {
+                console.error(xhr.statusText);
+            };
+            xhttp.send();
+        }
+
+        function devListAddrs(callback) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url+"/dev-listaddrs", true);
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === this.DONE) {
+
+                    //console.log(xhttp.responseText);
+                    addresses = JSON.parse(xhttp.responseText).addresses;
+                    callback(addresses);
                 }
             }
             xhttp.onerror = function (e) {
@@ -264,6 +286,15 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
                     "\tmsatoshi: " + c.msatoshi_to_us + "/" + c.msatoshi_total + "\n" +
                     "\tto_self_delay: " + c.to_self_delay + "\n\n";
             });
+        }
+        function print_devListAddrs (addresses){
+            var html = "<ol><li>";
+            html += addresses.map (function (element){
+                return element.p2sh + " - " + element.bech32;
+            }).join ("</li><li>");
+            html += "</li></ol>";
+            var tag = document.getElementById("addresses");
+            tag.innerHTML = html;
         }
 
 </script>

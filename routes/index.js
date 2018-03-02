@@ -22,4 +22,11 @@ router.get('/listnodes', function(req, res, next) {
 .catch(err => {res.status(500);});
 });
 
+router.get('/dev-listaddrs', function(req, res, next) {
+    client.devListaddrs()
+        .then(addresses => {res.status(200).send(addresses);})
+        .catch(err => {res.status(500);});
+});
+
+
 module.exports = router;
