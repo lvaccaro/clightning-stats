@@ -17,16 +17,16 @@ function getinfo() {
 	xhttp.open('GET', url + '/getinfo', true);
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === this.DONE) {
-            // Console.log(xhttp.responseText);
+			// Console.log(xhttp.responseText);
 			const info = JSON.parse(xhttp.responseText);
 			info.alias = alias;
 			printInfo(info);
 			listpeers();
 		}
 	};
-	xhttp.onerror = function () {
+	xhttp.addEventListener('error', () => {
 		console.error(xhttp.statusText);
-	};
+	});
 	xhttp.send();
 }
 
@@ -35,9 +35,9 @@ function listpeers() {
 	xhttp.open('GET', url + '/listpeers', true);
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === this.DONE) {
-            // Console.log(xhttp.responseText);
+			// Console.log(xhttp.responseText);
 			const peers = JSON.parse(xhttp.responseText).peers;
-            // PrintPeers(peers);
+			// PrintPeers(peers);
 
 			const channels = [];
 			peers.forEach(p => {
@@ -48,7 +48,7 @@ function listpeers() {
 					});
 				}
 			});
-            // PrintChannels(channels);
+			// PrintChannels(channels);
 
 			listnodes(nodes => {
 				nodes.forEach(n => {
@@ -69,9 +69,9 @@ function listpeers() {
 			});
 		}
 	};
-	xhttp.onerror = function () {
+	xhttp.addEventListener('error', () => {
 		console.error(xhttp.statusText);
-	};
+	});
 	xhttp.send();
 }
 
@@ -80,14 +80,14 @@ function listnodes(callback) {
 	xhttp.open('GET', url + '/listnodes', true);
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === this.DONE) {
-            // Console.log(xhttp.responseText);
+			// Console.log(xhttp.responseText);
 			const nodes = JSON.parse(xhttp.responseText).nodes;
 			callback(nodes);
 		}
 	};
-	xhttp.onerror = function () {
+	xhttp.addEventListener('error', () => {
 		console.error(xhttp.statusText);
-	};
+	});
 	xhttp.send();
 }
 
@@ -96,14 +96,14 @@ function devListAddrs(callback) {
 	xhttp.open('GET', url + '/dev-listaddrs', true);
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === this.DONE) {
-            // Console.log(xhttp.responseText);
+			// Console.log(xhttp.responseText);
 			const addresses = JSON.parse(xhttp.responseText).addresses;
 			callback(addresses);
 		}
 	};
-	xhttp.onerror = function () {
+	xhttp.addEventListener('error', () => {
 		console.error(xhttp.statusText);
-	};
+	});
 	xhttp.send();
 }
 
