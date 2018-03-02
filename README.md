@@ -1,4 +1,4 @@
-# clightning-stats
+# clightning-stats [![Build Status](https://travis-ci.org/lvaccaro/clightning-stats.svg?branch=master)](https://travis-ci.org/lvaccaro/clightning-stats)
 Web stats of [clightning](https://github.com/ElementsProject/lightning) node #LightningNetworks.
 
 ## how to install
