@@ -1,9 +1,10 @@
 {
   "name": "clightning-stats",
-  "version": "0.0.0",
-  "private": true,
+  "description": "Web c-lightning node stats",
+  "version": "0.0.1",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "xo public/index.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -15,5 +16,20 @@
     "lightning-client": "^0.5.2-beta.8",
     "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5"
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lvaccaro/clightning-stats.git"
+  },
+  "author": {
+    "name": "Luca Vaccaro",
+    "email": "luck87@gmail.com"
+  },
+  "keywords": [
+    "❤️",
+    "lightning",
+    "lightningnetworks",
+    "bitcoin"
+  ]
 }
