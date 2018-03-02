@@ -24,9 +24,20 @@ router.get('/listnodes', function(req, res, next) {
 
 router.get('/dev-listaddrs', function(req, res, next) {
     client.devListaddrs()
-        .then(addresses => {res.status(200).send(addresses);})
+        .then(object => {
+            const wrapAddresses = {
+                addresses: object.addresses.map (function (address){
+                    // avoid exposing pubkey, p2sh_redeemscript and bech32_redeemscript
+                    return {
+                        keyidx: address.keyidx,
+                        p2sh: address.p2sh,
+                        bech32: address.bech32
+                    };
+                })
+            };
+            res.status(200).send(wrapAddresses);
+        })
         .catch(err => {res.status(500);});
 });
-
 
 module.exports = router;
