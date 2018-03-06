@@ -137,6 +137,7 @@ function printConfigs(configs) {
         '\tdefault-fee-rate: ' + configs['default-fee-rate'] + '\n' +
         '\tfee-base: ' + configs['fee-base'] + '\n' +
         '\tfee-per-satoshi: ' + configs['fee-per-satoshi'] + '\n';
+        document.title = configs.alias;
 }
 
 function printInfo(info) {
