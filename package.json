@@ -15,7 +15,7 @@
     "jade": "~1.11.0",
     "lightning-client": "^0.5.2-beta.8",
     "morgan": "~1.9.0",
-    "npm": "^5.7.1",
+    "npm": "^5.8.0",
     "serve-favicon": "~2.4.5",
     "xo": "^0.20.3"
   },
