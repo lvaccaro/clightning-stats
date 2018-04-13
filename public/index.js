@@ -196,7 +196,8 @@ function printChannels(channels) {
             '\tfunding_txid: ' + c.funding_txid + '\n' +
             '\tstate: ' + c.state + '\n' +
             '\tmsatoshi: ' + c.msatoshi_to_us + '/' + c.msatoshi_total + '\n' +
-            '\tto_self_delay: ' + c.to_self_delay + '\n\n';
+            '\tto_self_delay: ' + c.to_self_delay + '\n' +
+            '\tstatus: ' + JSON.stringify(c.status, null, 8) + '\n\n';
 	});
 }
 function printDevListAddrs(addresses) {
