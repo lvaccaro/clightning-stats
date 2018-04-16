@@ -3,7 +3,8 @@
 /* global XMLHttpRequest */
 
 // Configs
-const url = 'http://btctest.waldo.fun:4000'; // Your server url
+// const url = 'http://btctest.waldo.fun:4000'; // Your server url
+const url = 'http://127.0.0.1:4000';
 
 // Init calls
 printUrl(url);
@@ -131,7 +132,7 @@ function printUrl(url) {
 function printConfigs(configs) {
 	const tag = document.getElementById('configs');
 	tag.innerHTML = '\talias: ' + configs.alias + '\n' +
-        '\trgb: ' + configs.rgb + '\n' +
+        '\trgb: ' + configs.rgb + '&nbsp;<span style="background-color: #' + configs.rgb + '; border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n' +
         '\tlocktime-blocks: ' + configs['locktime-blocks'] + '\n' +
         '\tcommit-fee: ' + configs['commit-fee'] + '\n' +
         '\tdefault-fee-rate: ' + configs['default-fee-rate'] + '\n' +
