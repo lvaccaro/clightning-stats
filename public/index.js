@@ -131,7 +131,7 @@ function printUrl(url) {
 function printConfigs(configs) {
 	const tag = document.getElementById('configs');
 	tag.innerHTML = '\talias: ' + configs.alias + '\n' +
-        '\trgb: ' + configs.rgb + '\n' +
+        '\trgb: ' + configs.rgb + '&nbsp;<span style="background-color: #' + configs.rgb + '; border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n' +
         '\tlocktime-blocks: ' + configs['locktime-blocks'] + '\n' +
         '\tcommit-fee: ' + configs['commit-fee'] + '\n' +
         '\tdefault-fee-rate: ' + configs['default-fee-rate'] + '\n' +
