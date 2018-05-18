@@ -153,7 +153,7 @@ function printInfo(info) {
         '\tblockheight: ' + info.blockheight + '\n' +
         '\tnetwork: ' + info.network + '\n';
 	if (typeof (address) !== 'undefined') {
-		tag.innerHTML += '\tURI: ' + info.id + '@' + address + ':' + info.port + '\n';
+		tag.innerHTML += '\tURI: ' + info.id + '@' + address.address + ':' + address.port + '\n';
 	}
 }
 
