@@ -148,7 +148,8 @@ function printInfo(info) {
 		address = info.address[0];
 	}
 	tag.innerHTML = '\tnodeid: ' + info.id + '\n' +
-        '\taddress: ' + ((address) ? JSON.stringify(address, null, 8) : '') + '\n' +
+        '\taddress: ' + ((address) ? address.address : '') + '\n' +
+        '\tport: ' + ((address) ? address.port : '') + '\n' +
         '\tversion: ' + info.version + '\n' +
         '\tblockheight: ' + info.blockheight + '\n' +
         '\tnetwork: ' + info.network + '\n';
