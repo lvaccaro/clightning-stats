@@ -145,10 +145,10 @@ function printInfo(info) {
 	tag.innerHTML = '';
 	let address;
 	if (info.address && info.address.length > 0 && info.address[0].address) {
-		address = JSON.stringify(info.address[0], null, 8);
+		address = info.address[0];
 	}
 	tag.innerHTML = '\tnodeid: ' + info.id + '\n' +
-        '\taddress: ' + ((address) ? address : '') + '\n' +
+        '\taddress: ' + ((address) ? JSON.stringify(address, null, 8) : '') + '\n' +
         '\tversion: ' + info.version + '\n' +
         '\tblockheight: ' + info.blockheight + '\n' +
         '\tnetwork: ' + info.network + '\n';
