@@ -36,9 +36,9 @@ function getinfo() {
 }
 
 function listpeers() {
-	simpleAyaxRequest('listpeers', peers => {
+	simpleAyaxRequest('listpeers', peersWrapper => {
 		const channels = [];
-		peers.forEach(p => {
+		peersWrapper.peers.forEach(p => {
 			if (p.channels) {
 				p.channels.forEach(c => {
 					c.id = p.id;
@@ -55,14 +55,14 @@ function listpeers() {
 						c.alias = n.alias;
 					}
 				});
-				peers.forEach(p => {
+				peersWrapper.peers.forEach(p => {
 					if (n.nodeid === p.id) {
 						p.alias = n.alias;
 					}
 				});
 			});
 
-			printPeers(peers);
+			printPeers(peersWrapper.peers);
 			printChannels(channels);
 		});
 	});
