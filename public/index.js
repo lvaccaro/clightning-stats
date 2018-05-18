@@ -13,114 +13,73 @@ listpeers();
 devListAddrs();
 
 // Functions
-
-function listconfigs() {
+function simpleAyaxRequest(api, completion) {
 	const xhttp = new XMLHttpRequest();
-	xhttp.open('GET', url + '/listconfigs', true);
+	xhttp.open('GET', url + '/' + api, true);
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === this.DONE) {
-			// Console.log(xhttp.responseText);
-			const configs = JSON.parse(xhttp.responseText);
-			printConfigs(configs);
+			completion(JSON.parse(xhttp.responseText));
 		}
 	};
 	xhttp.addEventListener('error', () => {
 		console.error(xhttp.statusText);
 	});
 	xhttp.send();
+}
+
+function listconfigs() {
+	simpleAyaxRequest('listconfigs', printConfigs);
 }
 
 function getinfo() {
-	const xhttp = new XMLHttpRequest();
-	xhttp.open('GET', url + '/getinfo', true);
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === this.DONE) {
-			// Console.log(xhttp.responseText);
-			const info = JSON.parse(xhttp.responseText);
-			printInfo(info);
-		}
-	};
-	xhttp.addEventListener('error', () => {
-		console.error(xhttp.statusText);
-	});
-	xhttp.send();
+	simpleAyaxRequest('getinfo', printInfo);
 }
 
 function listpeers() {
-	const xhttp = new XMLHttpRequest();
-	xhttp.open('GET', url + '/listpeers', true);
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === this.DONE) {
-			// Console.log(xhttp.responseText);
-			const peers = JSON.parse(xhttp.responseText).peers;
-			// PrintPeers(peers);
-
-			const channels = [];
-			peers.forEach(p => {
-				if (p.channels) {
-					p.channels.forEach(c => {
-						c.id = p.id;
-						channels.push(c);
-					});
-				}
-			});
-			// PrintChannels(channels);
-
-			listnodes(nodes => {
-				nodes.forEach(n => {
-					channels.forEach(c => {
-						if (n.nodeid === c.id) {
-							c.alias = n.alias;
-						}
-					});
-					peers.forEach(p => {
-						if (n.nodeid === p.id) {
-							p.alias = n.alias;
-						}
-					});
+	simpleAyaxRequest('listpeers', peers => {
+		const channels = [];
+		peers.forEach(p => {
+			if (p.channels) {
+				p.channels.forEach(c => {
+					c.id = p.id;
+					channels.push(c);
 				});
+			}
+		});
+		// PrintChannels(channels);
 
-				printPeers(peers);
-				printChannels(channels);
+		listnodes(nodes => {
+			nodes.forEach(n => {
+				channels.forEach(c => {
+					if (n.nodeid === c.id) {
+						c.alias = n.alias;
+					}
+				});
+				peers.forEach(p => {
+					if (n.nodeid === p.id) {
+						p.alias = n.alias;
+					}
+				});
 			});
-		}
-	};
-	xhttp.addEventListener('error', () => {
-		console.error(xhttp.statusText);
+
+			printPeers(peers);
+			printChannels(channels);
+		});
 	});
-	xhttp.send();
 }
 
 function listnodes(callback) {
-	const xhttp = new XMLHttpRequest();
-	xhttp.open('GET', url + '/listnodes', true);
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === this.DONE) {
-			// Console.log(xhttp.responseText);
-			const nodes = JSON.parse(xhttp.responseText).nodes;
-			callback(nodes);
-		}
-	};
-	xhttp.addEventListener('error', () => {
-		console.error(xhttp.statusText);
+	simpleAyaxRequest('listnodes', nodeWrapper => {
+		const nodes = nodeWrapper.nodes;
+		callback(nodes);
 	});
-	xhttp.send();
 }
 
 function devListAddrs() {
-	const xhttp = new XMLHttpRequest();
-	xhttp.open('GET', url + '/dev-listaddrs', true);
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === this.DONE) {
-			// Console.log(xhttp.responseText);
-			const addresses = JSON.parse(xhttp.responseText).addresses;
-            printDevListAddrs(addresses);
-		}
-	};
-	xhttp.addEventListener('error', () => {
-		console.error(xhttp.statusText);
+	simpleAyaxRequest('dev-listaddrs', addressesWrapper => {
+		const addresses = addressesWrapper.addresses;
+		printDevListAddrs(addresses);
 	});
-	xhttp.send();
 }
 
 function printUrl(url) {
