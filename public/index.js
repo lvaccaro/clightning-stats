@@ -3,7 +3,11 @@
 /* global XMLHttpRequest */
 
 // Configs
-const url = 'http://btctest.waldo.fun:4000'; // Your server url
+if (!window.location.origin) {
+	// https://tosbourn.com/a-fix-for-window-location-origin-in-internet-explorer/
+	window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+}
+const url = window.location.origin;
 
 // Init calls
 printUrl(url);
