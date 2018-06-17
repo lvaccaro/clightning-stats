@@ -1,12 +1,14 @@
 'use strict';
 /* global document */
 /* global XMLHttpRequest */
+/* global window */
 
 // Configs
 if (!window.location.origin) {
 	// https://tosbourn.com/a-fix-for-window-location-origin-in-internet-explorer/
 	window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
 }
+
 const url = window.location.origin;
 
 // Init calls
