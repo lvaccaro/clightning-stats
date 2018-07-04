@@ -33,16 +33,6 @@ Check the working website opening the url:
 open localhost:4000
 ```
 
-### configure the frontend
-Remember you need to configure the frontend information available in the file `public/index.html`, you will need to change:
-* `url` : your server url
-* `alias` : your node name
-```js
-
-    var url = "http://btctest.waldo.fun:4000"; // your server url
-    var alias = "Waldo.fun"; // your node name
-```
-
 ## automatical startup 
 If you want run automatically this information page consider to run it using the PM2 with the `launch.sh` script.
 
