@@ -10,13 +10,13 @@ npm start
 ```
 
 ## how to configure
-If you want you can start the server changing the default environment options: 
+If you want you can start the server changing the default environment options:
 * `PORT` : server localport (default: 4000)
 * `LIGHTNINGDIR` : folder of lightning rpc file (default ~/.lightning)
 
 Plus configure the frontend specific information of your node.
 
-### configure the enviroment 
+### configure the enviroment
 A simple export of variables make the magic as in the following command:
 ```shell
 PORT=4000 LIGHTNINGDIR=$HOME/.lightning npm start
@@ -33,7 +33,11 @@ Check the working website opening the url:
 open localhost:4000
 ```
 
-## automatical startup 
+## automatical startup
 If you want run automatically this information page consider to run it using the PM2 with the `launch.sh` script.
 
 Configure the `launch.sh` script with your custom information and run it using the command `pm2 start launch.sh`.
+
+## Screenshot
+
+![screenshot_bhb_network.png](images/screenshot_bhb_network.png)
