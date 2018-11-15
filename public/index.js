@@ -85,45 +85,21 @@ function listpeers() {
 				});
 			}
 		});
-		// PrintChannels(channels);
 
+		const aliasMap = {};
 		channels.forEach((c, index) => {
 			simpleAyaxRequest('listnodes/' + c.id, nodes => {
-				c.alias = nodes.nodes [0].alias;
-				if (index === channels.length -1){
+				c.alias = nodes.nodes[0].alias;
+				aliasMap[c.id] = c.alias;
+				if (index === channels.length - 1) {
+					peersWrapper.peers.forEach(p => {
+						p.alias = aliasMap[p.id];
+					});
 					printChannels(channels);
-				}
-			});
-		});
-
-		peersWrapper.peers.forEach((p, index) => {
-			simpleAyaxRequest('listnodes/' + p.id, nodes => {
-				p.alias = nodes.nodes [0].alias;
-				if (index === peersWrapper.peers.length -1){
 					printPeers(peersWrapper.peers);
 				}
 			});
 		});
-
-		/*
-		Listnodes(nodes => {
-			nodes.forEach(n => {
-				channels.forEach(c => {
-					if (n.nodeid === c.id) {
-						c.alias = n.alias;
-					}
-				});
-				peersWrapper.peers.forEach(p => {
-					if (n.nodeid === p.id) {
-						p.alias = n.alias;
-					}
-				});
-			});
-
-			printPeers(peersWrapper.peers);
-			printChannels(channels);
-		});
-*/
 	});
 }
 

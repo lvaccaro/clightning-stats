@@ -29,7 +29,7 @@ router.get('/listpeers', (req, res, /* next */) => {
 });
 
 router.get('/listnodes/:id', (req, res, /* next */) => {
-	const id = req.params['id']
+	const id = req.params.id;
 	client.listnodes(id)
 		.then(nodes => {
 			res.status(200).send(nodes);
