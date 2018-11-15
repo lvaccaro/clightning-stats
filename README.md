@@ -41,3 +41,5 @@ Configure the `launch.sh` script with your custom information and run it using t
 ## Screenshot
 
 ![screenshot_bhb_network.png](images/screenshot_bhb_network.png)
+
+Donations are welcome: `1LNST1ZR2dhRLg7AHfr3NLj4Yv5jMQCWgJ`
