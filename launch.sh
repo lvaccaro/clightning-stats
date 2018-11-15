@@ -1,4 +1,4 @@
 #!/bin/sh
 export PORT=4000
-export LIGHTNINGDIR=/root/.lightning
+export LIGHTNINGDIR=$HOME/.lightning
 npm start

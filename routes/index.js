@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router(); // eslint-disable-line new-cap
 const LightningClient = require('lightning-client');
 
-const client = new LightningClient(process.env.LIGHTNINGDIR || '~/.lightning', true);
+const client = new LightningClient(process.env.LIGHTNINGDIR || process.env.HOME + '/.lightning', true);
 
 /* GET home page. */
 router.get('/getinfo', (req, res, /* next */) => {

@@ -19,12 +19,12 @@ Plus configure the frontend specific information of your node.
 ### configure the enviroment 
 A simple export of variables make the magic as in the following command:
 ```shell
-PORT=4000 LIGHTNINGDIR=~/.lightning npm start
+PORT=4000 LIGHTNINGDIR=$HOME/.lightning npm start
 ```
 Or if you want start as daemon:
 ```shell
 export PORT=4000
-export LIGHTNINGDIR=~/.lightning
+export LIGHTNINGDIR=$HOME/.lightning
 nohup npm start &
 ```
 
