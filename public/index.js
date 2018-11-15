@@ -41,7 +41,7 @@ function getinfo() {
 	simpleAyaxRequest('getinfo', printInfo);
 }
 
-function listpeers() {
+function listpeersOld() {
 	simpleAyaxRequest('listpeers', peersWrapper => {
 		const channels = [];
 		peersWrapper.peers.forEach(p => {
@@ -71,6 +71,59 @@ function listpeers() {
 			printPeers(peersWrapper.peers);
 			printChannels(channels);
 		});
+	});
+}
+
+function listpeers() {
+	simpleAyaxRequest('listpeers', peersWrapper => {
+		const channels = [];
+		peersWrapper.peers.forEach(p => {
+			if (p.channels) {
+				p.channels.forEach(c => {
+					c.id = p.id;
+					channels.push(c);
+				});
+			}
+		});
+		// PrintChannels(channels);
+
+		channels.forEach((c, index) => {
+			simpleAyaxRequest('listnodes/' + c.id, nodes => {
+				c.alias = nodes.nodes [0].alias;
+				if (index === channels.length -1){
+					printChannels(channels);
+				}
+			});
+		});
+
+		peersWrapper.peers.forEach((p, index) => {
+			simpleAyaxRequest('listnodes/' + p.id, nodes => {
+				p.alias = nodes.nodes [0].alias;
+				if (index === peersWrapper.peers.length -1){
+					printPeers(peersWrapper.peers);
+				}
+			});
+		});
+
+		/*
+		Listnodes(nodes => {
+			nodes.forEach(n => {
+				channels.forEach(c => {
+					if (n.nodeid === c.id) {
+						c.alias = n.alias;
+					}
+				});
+				peersWrapper.peers.forEach(p => {
+					if (n.nodeid === p.id) {
+						p.alias = n.alias;
+					}
+				});
+			});
+
+			printPeers(peersWrapper.peers);
+			printChannels(channels);
+		});
+*/
 	});
 }
 
