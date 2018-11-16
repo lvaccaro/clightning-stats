@@ -19,7 +19,7 @@ getinfo();
 listpeers(peers => {
 	const aliasMap = {};
 	const channels = [];
-	let counter = 0;
+	let counter = peers.length;
 
 	peers.forEach(p => {
 		if (p.channels) {
@@ -29,10 +29,10 @@ listpeers(peers => {
 			});
 		}
 		listnode(p.id, node => {
-			++counter;
+			--counter;
 			p.alias = node.alias;
 			aliasMap[node.nodeid] = p.alias;
-			if (counter === peers.length) {
+			if (counter === 0) {
 				channels.forEach(c => {
 					c.alias = aliasMap[c.id];
 				});
