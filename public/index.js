@@ -89,9 +89,9 @@ function listpeers() {
 		const aliasMap = {};
 		let counter = 0;
 		channels.forEach(c => {
-			simpleAyaxRequest('listnodes/' + c.id, nodes => {
+			listnode(c.id, node => {
 				++counter;
-				c.alias = nodes.nodes[0].alias;
+				c.alias = node.alias;
 				aliasMap[c.id] = c.alias;
 				if (counter === channels.length) {
 					peersWrapper.peers.forEach(p => {
@@ -102,6 +102,13 @@ function listpeers() {
 				}
 			});
 		});
+	});
+}
+
+function listnode(id, callback) {
+	simpleAyaxRequest('listnodes/' + id, nodeWrapper => {
+		const nodes = nodeWrapper.nodes;
+		callback(nodes[0]);
 	});
 }
 
