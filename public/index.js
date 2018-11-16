@@ -105,7 +105,7 @@ function printConfigs(configs) {
 	document.title = configs.alias;
 }
 
-function printInfo(info) {
+function printInfoOld(info) {
 	const tag = document.getElementById('info');
 	tag.innerHTML = '';
 	let address;
@@ -121,6 +121,16 @@ function printInfo(info) {
 	if (typeof (address) !== 'undefined') {
 		tag.innerHTML += '\tURI: ' + info.id + '@' + address.address + ':' + address.port + '\n';
 	}
+}
+
+function printInfo(info) {
+	const tag = document.getElementById('info');
+	tag.innerHTML = JSON.stringify(info, null, 8);
+	/*
+	if (typeof (address) !== 'undefined') {
+		tag.innerHTML += '\tURI: ' + info.id + '@' + address.address + ':' + address.port + '\n';
+	}
+	*/
 }
 
 function printPeers(peers) {
