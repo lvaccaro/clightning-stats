@@ -15,8 +15,12 @@ const url = window.location.origin;
 printUrl(url);
 listconfigs();
 getinfo();
+
 listpeers(peers => {
+	const aliasMap = {};
 	const channels = [];
+	let counter = 0;
+
 	peers.forEach(p => {
 		if (p.channels) {
 			p.channels.forEach(c => {
@@ -24,18 +28,13 @@ listpeers(peers => {
 				channels.push(c);
 			});
 		}
-	});
-
-	const aliasMap = {};
-	let counter = 0;
-	channels.forEach(c => {
-		listnode(c.id, node => {
+		listnode(p.id, node => {
 			++counter;
-			c.alias = node.alias;
-			aliasMap[c.id] = c.alias;
-			if (counter === channels.length) {
-				peers.forEach(p => {
-					p.alias = aliasMap[p.id];
+			p.alias = node.alias;
+			aliasMap[node.nodeid] = p.alias;
+			if (counter === peers.length) {
+				channels.forEach(c => {
+					c.alias = aliasMap[c.id];
 				});
 				printChannels(channels);
 				printPeers(peers);
