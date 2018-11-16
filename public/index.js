@@ -87,11 +87,13 @@ function listpeers() {
 		});
 
 		const aliasMap = {};
-		channels.forEach((c, index) => {
+		let counter = 0;
+		channels.forEach(c => {
 			simpleAyaxRequest('listnodes/' + c.id, nodes => {
+				++counter;
 				c.alias = nodes.nodes[0].alias;
 				aliasMap[c.id] = c.alias;
-				if (index === channels.length - 1) {
+				if (counter === channels.length) {
 					peersWrapper.peers.forEach(p => {
 						p.alias = aliasMap[p.id];
 					});
