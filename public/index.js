@@ -125,12 +125,12 @@ function printInfoOld(info) {
 
 function printInfo(info) {
 	const tag = document.getElementById('info');
-	tag.innerHTML = JSON.stringify(info, null, 8);
-	/*
-	if (typeof (address) !== 'undefined') {
-		tag.innerHTML += '\tURI: ' + info.id + '@' + address.address + ':' + address.port + '\n';
+	if (info.address && info.address.length > 0 && info.address[0].address) {
+		info.address.forEach(addressInfo => {
+			addressInfo.URI = info.id + '@' + addressInfo.address + ':' + addressInfo.port;
+		});
 	}
-	*/
+	tag.innerHTML = JSON.stringify(info, null, 8);
 }
 
 function printPeers(peers) {
