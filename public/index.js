@@ -15,7 +15,35 @@ const url = window.location.origin;
 printUrl(url);
 listconfigs();
 getinfo();
-listpeers();
+listpeers(peers => {
+	const channels = [];
+	peers.forEach(p => {
+		if (p.channels) {
+			p.channels.forEach(c => {
+				c.id = p.id;
+				channels.push(c);
+			});
+		}
+	});
+
+	const aliasMap = {};
+	let counter = 0;
+	channels.forEach(c => {
+		listnode(c.id, node => {
+			++counter;
+			c.alias = node.alias;
+			aliasMap[c.id] = c.alias;
+			if (counter === channels.length) {
+				peers.forEach(p => {
+					p.alias = aliasMap[p.id];
+				});
+				printChannels(channels);
+				printPeers(peers);
+			}
+		});
+	});
+});
+
 devListAddrs();
 
 // Functions
@@ -41,70 +69,6 @@ function getinfo() {
 	simpleAyaxRequest('getinfo', printInfo);
 }
 
-function listpeersOld() {
-	simpleAyaxRequest('listpeers', peersWrapper => {
-		const channels = [];
-		peersWrapper.peers.forEach(p => {
-			if (p.channels) {
-				p.channels.forEach(c => {
-					c.id = p.id;
-					channels.push(c);
-				});
-			}
-		});
-		// PrintChannels(channels);
-
-		listnodes(nodes => {
-			nodes.forEach(n => {
-				channels.forEach(c => {
-					if (n.nodeid === c.id) {
-						c.alias = n.alias;
-					}
-				});
-				peersWrapper.peers.forEach(p => {
-					if (n.nodeid === p.id) {
-						p.alias = n.alias;
-					}
-				});
-			});
-
-			printPeers(peersWrapper.peers);
-			printChannels(channels);
-		});
-	});
-}
-
-function listpeers() {
-	simpleAyaxRequest('listpeers', peersWrapper => {
-		const channels = [];
-		peersWrapper.peers.forEach(p => {
-			if (p.channels) {
-				p.channels.forEach(c => {
-					c.id = p.id;
-					channels.push(c);
-				});
-			}
-		});
-
-		const aliasMap = {};
-		let counter = 0;
-		channels.forEach(c => {
-			listnode(c.id, node => {
-				++counter;
-				c.alias = node.alias;
-				aliasMap[c.id] = c.alias;
-				if (counter === channels.length) {
-					peersWrapper.peers.forEach(p => {
-						p.alias = aliasMap[p.id];
-					});
-					printChannels(channels);
-					printPeers(peersWrapper.peers);
-				}
-			});
-		});
-	});
-}
-
 function listnode(id, callback) {
 	simpleAyaxRequest('listnodes/' + id, nodeWrapper => {
 		const nodes = nodeWrapper.nodes;
@@ -116,6 +80,13 @@ function listnodes(callback) {
 	simpleAyaxRequest('listnodes', nodeWrapper => {
 		const nodes = nodeWrapper.nodes;
 		callback(nodes);
+	});
+}
+
+function listpeers(callback) {
+	simpleAyaxRequest('listpeers', peersWrapper => {
+		const peers = peersWrapper.peers;
+		callback(peers);
 	});
 }
 
