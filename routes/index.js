@@ -42,7 +42,42 @@ router.get('/listnodes', (req, res, /* next */) => {
 router.get('/listconfigs', (req, res, /* next */) => {
 	client.listconfigs()
 		.then(configs => {
-			res.status(200).send(configs);
+			// Allow only non sensitive informations
+			const fields = [
+				'# version',
+				'rgb',
+				'alias',
+				'ignore-fee-limits',
+				'watchtime-blocks',
+				'max-locktime-blocks',
+				'funding-confirms',
+				'commit-fee-min',
+				'commit-fee-max',
+				'commit-fee',
+				'cltv-delta',
+				'cltv-final',
+				'commit-time',
+				'fee-base',
+				'rescan',
+				'fee-per-satoshi',
+				'bind-addr',
+				'announce-addr',
+				'offline',
+				'autolisten',
+				'network',
+				'allow-deprecated-apis',
+				'autocleaninvoice-cycle',
+				'autocleaninvoice-expired-by',
+				'always-use-proxy',
+				'disable-dns'
+			];
+			const configsRet = {};
+			fields.forEach(field => {
+				if (configs[field]) {
+					configsRet[field] = configs[field];
+				}
+			});
+			res.status(200).send(configsRet);
 		})
 		.catch(err => {
 			console.log({err});
