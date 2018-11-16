@@ -113,7 +113,7 @@ function printConfigs(configs) {
 	document.title = configs.alias;
 }
 
-function printInfo(info) {
+function printInfoOld(info) {
 	const tag = document.getElementById('info');
 	tag.innerHTML = '';
 	let address;
@@ -129,6 +129,16 @@ function printInfo(info) {
 	if (typeof (address) !== 'undefined') {
 		tag.innerHTML += '\tURI: ' + info.id + '@' + address.address + ':' + address.port + '\n';
 	}
+}
+
+function printInfo(info) {
+	const tag = document.getElementById('info');
+	if (info.address && info.address.length > 0 && info.address[0].address) {
+		info.address.forEach(addressInfo => {
+			addressInfo.URI = info.id + '@' + addressInfo.address + ':' + addressInfo.port;
+		});
+	}
+	tag.innerHTML = JSON.stringify(info, null, 8);
 }
 
 function printPeers(peers) {
