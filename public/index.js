@@ -131,7 +131,8 @@ function printPeers(peers) {
             ((p.alias) ? ('\talias: ' + p.alias + '\n') : '') +
             '\tconnected: ' + p.connected + '\n' +
             '\tstate: ' + ((p.state) ? p.state : 'NORMAL') + '\n' +
-            '\tchannels: ' + ((p.channels) ? p.channels.length : 0) + '\n\n';
+            '\tchannels: ' + ((p.channels) ? p.channels.length : 0) + '\n' +
+            '\tURI:\n' + p.netaddr.map(addr => {return '\t\t' + p.id + '@' + addr;}).join('\n') + '\n\n'; // eslint-disable-line brace-style
 	});
 }
 
