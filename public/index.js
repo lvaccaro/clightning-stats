@@ -181,7 +181,7 @@ function printChannels(channels) {
             '\tstate: ' + c.state + '\n' +
             '\tmsatoshi: ' + c.msatoshi_to_us + '/' + c.msatoshi_total + '\n' +
             '\tto_self_delay: ' + c.to_self_delay + '\n' +
-            '\tstatus: ' + JSON.stringify(c.status, null, 8) + '\n\n';
+            '\tstatus:\n' + c.status.map(status => {return '\t\t' + status;}).join('\n') + '\n\n'; // eslint-disable-line brace-style
 	});
 }
 function printDevListAddrs(addresses) {
