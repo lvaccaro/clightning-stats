@@ -113,27 +113,31 @@ function printConfigs(configs) {
 	document.title = configs.alias;
 }
 
-function printInfoOld(info) {
+function printInfo(info) {
 	const tag = document.getElementById('info');
 	tag.innerHTML = '';
-	let address;
-	if (info.address && info.address.length > 0 && info.address[0].address) {
-		address = info.address[0];
+
+	if (info.address) {
+		info.address.forEach(addressInfo => {
+			addressInfo.URI = info.id + '@' + addressInfo.address + ':' + addressInfo.port;
+		});
 	}
+
 	tag.innerHTML = '\tnodeid: ' + info.id + '\n' +
-        '\taddress: ' + ((address) ? address.address : '') + '\n' +
-        '\tport: ' + ((address) ? address.port : '') + '\n' +
+        '\taddress:\n' + info.address.map(addr => {
+                return '\t\ttype: ' + addr.type + '\n' + // eslint-disable-line indent
+                       '\t\taddress: ' + addr.address + '\n' +
+                       '\t\tport: ' + addr.port + '\n' +
+                       '\t\tURI: ' + addr.URI;
+        }).join('\n\n') + '\n\n' +
         '\tversion: ' + info.version + '\n' +
         '\tblockheight: ' + info.blockheight + '\n' +
         '\tnetwork: ' + info.network + '\n';
-	if (typeof (address) !== 'undefined') {
-		tag.innerHTML += '\tURI: ' + info.id + '@' + address.address + ':' + address.port + '\n';
-	}
 }
 
-function printInfo(info) {
+function printInfoStringify(info) {
 	const tag = document.getElementById('info');
-	if (info.address && info.address.length > 0 && info.address[0].address) {
+	if (info.address) {
 		info.address.forEach(addressInfo => {
 			addressInfo.URI = info.id + '@' + addressInfo.address + ':' + addressInfo.port;
 		});
