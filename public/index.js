@@ -122,6 +122,9 @@ function printInfo(info) {
 			addressInfo.URI = info.id + '@' + addressInfo.address + ':' + addressInfo.port;
 		});
 	}
+	else{
+		info.address = [];
+	}
 
 	tag.innerHTML = '\tnodeid: ' + info.id + '\n' +
         '\taddress:\n' + info.address.map(addr => {
