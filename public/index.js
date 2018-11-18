@@ -13,8 +13,8 @@ const url = window.location.origin;
 
 // Init calls
 printUrl(url);
-listconfigs();
-getinfo();
+listconfigs(printConfigs);
+getinfo(printInfo);
 
 listpeers(peers => {
 	const aliasMap = {};
@@ -43,7 +43,7 @@ listpeers(peers => {
 	});
 });
 
-devListAddrs();
+devListAddrs(printDevListAddrs);
 
 // Functions
 function simpleAyaxRequest(api, completion) {
@@ -60,12 +60,12 @@ function simpleAyaxRequest(api, completion) {
 	xhttp.send();
 }
 
-function listconfigs() {
-	simpleAyaxRequest('listconfigs', printConfigs);
+function listconfigs(callback) {
+	simpleAyaxRequest('listconfigs', callback);
 }
 
-function getinfo() {
-	simpleAyaxRequest('getinfo', printInfo);
+function getinfo(callback) {
+	simpleAyaxRequest('getinfo', callback);
 }
 
 function listnode(id, callback) {
@@ -89,10 +89,10 @@ function listpeers(callback) {
 	});
 }
 
-function devListAddrs() {
+function devListAddrs(callback) {
 	simpleAyaxRequest('dev-listaddrs', addressesWrapper => {
 		const addresses = addressesWrapper.addresses;
-		printDevListAddrs(addresses);
+		callback(addresses);
 	});
 }
 
