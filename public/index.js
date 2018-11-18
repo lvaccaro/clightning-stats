@@ -82,7 +82,7 @@ function fieldUnwrapper(field) {
 }
 
 function listnode(id, callback) {
-	simpleAyaxRequestUnwrap('listpeers', nodeWrapper => {
+	simpleAyaxRequestUnwrap('listnodes/' + id, nodeWrapper => {
 		return fieldUnwrapper('nodes')(nodeWrapper)[0];
 	}, callback);
 }
