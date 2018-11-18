@@ -71,25 +71,23 @@ listpeers(peers => {
 	});
 });
 
-function listnodes(callback) {
-	simpleAyaxRequest('listnodes', nodeWrapper => {
-		const nodes = nodeWrapper.nodes;
-		callback(nodes);
+function simpleAyaxRequestUnwrap(api, unwrap, callback) {
+	simpleAyaxRequest(api, wrapper => {
+		const result = wrapper[unwrap];
+		callback(result);
 	});
+}
+
+function listnodes(callback) {
+	simpleAyaxRequestUnwrap('listnodes', 'nodes', callback);
 }
 
 function listpeers(callback) {
-	simpleAyaxRequest('listpeers', peersWrapper => {
-		const peers = peersWrapper.peers;
-		callback(peers);
-	});
+	simpleAyaxRequestUnwrap('listpeers', 'peers', callback);
 }
 
 function devListAddrs(callback) {
-	simpleAyaxRequest('dev-listaddrs', addressesWrapper => {
-		const addresses = addressesWrapper.addresses;
-		callback(addresses);
-	});
+	simpleAyaxRequestUnwrap('dev-listaddrs', 'addresses', callback);
 }
 
 function printUrl(url) {
