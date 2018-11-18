@@ -13,10 +13,9 @@ const url = window.location.origin;
 
 // Init calls
 printUrl(url);
-listconfigs();
-getinfo();
-listpeers();
-devListAddrs();
+listconfigs(printConfigs);
+getinfo(printInfo);
+devListAddrs(printDevListAddrs);
 
 // Functions
 function simpleAyaxRequest(api, completion) {
@@ -33,46 +32,44 @@ function simpleAyaxRequest(api, completion) {
 	xhttp.send();
 }
 
-function listconfigs() {
-	simpleAyaxRequest('listconfigs', printConfigs);
+function listconfigs(callback) {
+	simpleAyaxRequest('listconfigs', callback);
 }
 
-function getinfo() {
-	simpleAyaxRequest('getinfo', printInfo);
+function getinfo(callback) {
+	simpleAyaxRequest('getinfo', callback);
 }
 
-function listpeers() {
-	simpleAyaxRequest('listpeers', peersWrapper => {
-		const channels = [];
-		peersWrapper.peers.forEach(p => {
-			if (p.channels) {
-				p.channels.forEach(c => {
-					c.id = p.id;
-					channels.push(c);
-				});
-			}
-		});
-		// PrintChannels(channels);
-
-		listnodes(nodes => {
-			nodes.forEach(n => {
-				channels.forEach(c => {
-					if (n.nodeid === c.id) {
-						c.alias = n.alias;
-					}
-				});
-				peersWrapper.peers.forEach(p => {
-					if (n.nodeid === p.id) {
-						p.alias = n.alias;
-					}
-				});
+listpeers(peers => {
+	const channels = [];
+	peers.forEach(p => {
+		if (p.channels) {
+			p.channels.forEach(c => {
+				c.id = p.id;
+				channels.push(c);
 			});
-
-			printPeers(peersWrapper.peers);
-			printChannels(channels);
-		});
+		}
 	});
-}
+	// PrintChannels(channels);
+
+	listnodes(nodes => {
+		nodes.forEach(n => {
+			channels.forEach(c => {
+				if (n.nodeid === c.id) {
+					c.alias = n.alias;
+				}
+			});
+			peers.forEach(p => {
+				if (n.nodeid === p.id) {
+					p.alias = n.alias;
+				}
+			});
+		});
+
+		printPeers(peers);
+		printChannels(channels);
+	});
+});
 
 function listnodes(callback) {
 	simpleAyaxRequest('listnodes', nodeWrapper => {
@@ -81,10 +78,17 @@ function listnodes(callback) {
 	});
 }
 
-function devListAddrs() {
+function listpeers(callback) {
+	simpleAyaxRequest('listpeers', peersWrapper => {
+		const peers = peersWrapper.peers;
+		callback(peers);
+	});
+}
+
+function devListAddrs(callback) {
 	simpleAyaxRequest('dev-listaddrs', addressesWrapper => {
 		const addresses = addressesWrapper.addresses;
-		printDevListAddrs(addresses);
+		callback(addresses);
 	});
 }
 
