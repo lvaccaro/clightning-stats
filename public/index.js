@@ -15,6 +15,34 @@ const url = window.location.origin;
 printUrl(url);
 listconfigs(printConfigs);
 getinfo(printInfo);
+
+listpeers(peers => {
+	const aliasMap = {};
+	const channels = [];
+	let counter = peers.length;
+
+	peers.forEach(p => {
+		if (p.channels) {
+			p.channels.forEach(c => {
+				c.id = p.id;
+				channels.push(c);
+			});
+		}
+		listnode(p.id, node => {
+			--counter;
+			p.alias = node.alias;
+			aliasMap[node.nodeid] = p.alias;
+			if (counter === 0) {
+				channels.forEach(c => {
+					c.alias = aliasMap[c.id];
+				});
+				printChannels(channels);
+				printPeers(peers);
+			}
+		});
+	});
+});
+
 devListAddrs(printDevListAddrs);
 
 // Functions
@@ -40,36 +68,12 @@ function getinfo(callback) {
 	simpleAyaxRequest('getinfo', callback);
 }
 
-listpeers(peers => {
-	const channels = [];
-	peers.forEach(p => {
-		if (p.channels) {
-			p.channels.forEach(c => {
-				c.id = p.id;
-				channels.push(c);
-			});
-		}
+function listnode(id, callback) {
+	simpleAyaxRequest('listnodes/' + id, nodeWrapper => {
+		const nodes = nodeWrapper.nodes;
+		callback(nodes[0]);
 	});
-	// PrintChannels(channels);
-
-	listnodes(nodes => {
-		nodes.forEach(n => {
-			channels.forEach(c => {
-				if (n.nodeid === c.id) {
-					c.alias = n.alias;
-				}
-			});
-			peers.forEach(p => {
-				if (n.nodeid === p.id) {
-					p.alias = n.alias;
-				}
-			});
-		});
-
-		printPeers(peers);
-		printChannels(channels);
-	});
-});
+}
 
 function simpleAyaxRequestUnwrap(api, unwrap, callback) {
 	simpleAyaxRequest(api, wrapper => {
@@ -78,7 +82,7 @@ function simpleAyaxRequestUnwrap(api, unwrap, callback) {
 	});
 }
 
-function listnodes(callback) {
+function listnodes(callback) { // eslint-disable-line no-unused-vars
 	simpleAyaxRequestUnwrap('listnodes', 'nodes', callback);
 }
 
@@ -110,19 +114,35 @@ function printConfigs(configs) {
 function printInfo(info) {
 	const tag = document.getElementById('info');
 	tag.innerHTML = '';
-	let address;
-	if (info.address && info.address.length > 0 && info.address[0].address) {
-		address = info.address[0];
+
+	if (info.address) {
+		info.address.forEach(addressInfo => {
+			addressInfo.URI = info.id + '@' + addressInfo.address + ':' + addressInfo.port;
+		});
+	} else {
+		info.address = [];
 	}
+
 	tag.innerHTML = '\tnodeid: ' + info.id + '\n' +
-        '\taddress: ' + ((address) ? address.address : '') + '\n' +
-        '\tport: ' + ((address) ? address.port : '') + '\n' +
+        '\taddress:\n' + info.address.map(addr => {
+                return '\t\ttype: ' + addr.type + '\n' + // eslint-disable-line indent
+                       '\t\taddress: ' + addr.address + '\n' +
+                       '\t\tport: ' + addr.port + '\n' +
+                       '\t\tURI: ' + addr.URI;
+        }).join('\n\n') + '\n\n' +
         '\tversion: ' + info.version + '\n' +
         '\tblockheight: ' + info.blockheight + '\n' +
         '\tnetwork: ' + info.network + '\n';
-	if (typeof (address) !== 'undefined') {
-		tag.innerHTML += '\tURI: ' + info.id + '@' + address.address + ':' + address.port + '\n';
+}
+
+function printInfoStringify(info) { // eslint-disable-line no-unused-vars
+	const tag = document.getElementById('info');
+	if (info.address) {
+		info.address.forEach(addressInfo => {
+			addressInfo.URI = info.id + '@' + addressInfo.address + ':' + addressInfo.port;
+		});
 	}
+	tag.innerHTML = JSON.stringify(info, null, 8);
 }
 
 function printPeers(peers) {

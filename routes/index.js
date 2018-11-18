@@ -28,8 +28,9 @@ router.get('/listpeers', (req, res, /* next */) => {
 		});
 });
 
-router.get('/listnodes', (req, res, /* next */) => {
-	client.listnodes()
+router.get('/listnodes/:id', (req, res, /* next */) => {
+	const id = req.params.id;
+	client.listnodes(id)
 		.then(nodes => {
 			res.status(200).send(nodes);
 		})
