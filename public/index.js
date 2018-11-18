@@ -75,7 +75,7 @@ function listnode(id, callback) {
 	});
 }
 
-function listnodes(callback) {
+function listnodes(callback) { // eslint-disable-line no-unused-vars
 	simpleAyaxRequest('listnodes', nodeWrapper => {
 		const nodes = nodeWrapper.nodes;
 		callback(nodes);
@@ -121,8 +121,7 @@ function printInfo(info) {
 		info.address.forEach(addressInfo => {
 			addressInfo.URI = info.id + '@' + addressInfo.address + ':' + addressInfo.port;
 		});
-	}
-	else{
+	} else {
 		info.address = [];
 	}
 
@@ -138,7 +137,7 @@ function printInfo(info) {
         '\tnetwork: ' + info.network + '\n';
 }
 
-function printInfoStringify(info) {
+function printInfoStringify(info) { // eslint-disable-line no-unused-vars
 	const tag = document.getElementById('info');
 	if (info.address) {
 		info.address.forEach(addressInfo => {
