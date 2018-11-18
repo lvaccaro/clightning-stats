@@ -68,30 +68,35 @@ function getinfo(callback) {
 	simpleAyaxRequest('getinfo', callback);
 }
 
-function listnode(id, callback) {
-	simpleAyaxRequest('listnodes/' + id, nodeWrapper => {
-		const nodes = nodeWrapper.nodes;
-		callback(nodes[0]);
-	});
-}
-
-function simpleAyaxRequestUnwrap(api, unwrap, callback) {
+function simpleAyaxRequestUnwrap(api, unwrapper, callback) {
 	simpleAyaxRequest(api, wrapper => {
-		const result = wrapper[unwrap];
+		const result = unwrapper(wrapper);
 		callback(result);
 	});
 }
 
+function listnode(id, callback) {
+	simpleAyaxRequestUnwrap('listpeers', nodeWrapper => {
+		const nodes = nodeWrapper.nodes;
+		return nodes[0];
+	}, callback);
+}
+
+function fieldUnwrapper(field) {
+	return function (wrapper) {
+		return wrapper[field];
+	};
+}
 function listnodes(callback) { // eslint-disable-line no-unused-vars
-	simpleAyaxRequestUnwrap('listnodes', 'nodes', callback);
+	simpleAyaxRequestUnwrap('listnodes', fieldUnwrapper('nodes'), callback);
 }
 
 function listpeers(callback) {
-	simpleAyaxRequestUnwrap('listpeers', 'peers', callback);
+	simpleAyaxRequestUnwrap('listpeers', fieldUnwrapper('peers'), callback);
 }
 
 function devListAddrs(callback) {
-	simpleAyaxRequestUnwrap('dev-listaddrs', 'addresses', callback);
+	simpleAyaxRequestUnwrap('dev-listaddrs', fieldUnwrapper('addresses'), callback);
 }
 
 function printUrl(url) {
