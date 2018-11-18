@@ -75,18 +75,18 @@ function simpleAyaxRequestUnwrap(api, unwrapper, callback) {
 	});
 }
 
-function listnode(id, callback) {
-	simpleAyaxRequestUnwrap('listpeers', nodeWrapper => {
-		const nodes = nodeWrapper.nodes;
-		return nodes[0];
-	}, callback);
-}
-
 function fieldUnwrapper(field) {
 	return function (wrapper) {
 		return wrapper[field];
 	};
 }
+
+function listnode(id, callback) {
+	simpleAyaxRequestUnwrap('listpeers', nodeWrapper => {
+		return fieldUnwrapper('nodes')(nodeWrapper)[0];
+	}, callback);
+}
+
 function listnodes(callback) { // eslint-disable-line no-unused-vars
 	simpleAyaxRequestUnwrap('listnodes', fieldUnwrapper('nodes'), callback);
 }
