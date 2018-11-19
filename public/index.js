@@ -177,9 +177,9 @@ function printChannels(channels) {
 			capacityTotal += c.msatoshi_total;
 		}
 	});
-	tag.innerHTML += 'Num channels : ' + count + '\n';
-	tag.innerHTML += 'Your channel-side capacity : ' + capacityUs + ' msatoshi\n';
-	tag.innerHTML += 'Total capacity in channels : ' + capacityTotal + ' msatoshi\n\n';
+	tag.innerHTML += 'Num channels: ' + count + '\n';
+	tag.innerHTML += 'Your channel-side capacity: ' + capacityUs + ' msatoshi\n';
+	tag.innerHTML += 'Total capacity in channels: ' + capacityTotal + ' msatoshi\n\n';
 
 	channels.forEach(c => {
 		tag.innerHTML +=
