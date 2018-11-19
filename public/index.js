@@ -194,11 +194,8 @@ function printChannels(channels) {
 	});
 }
 function printDevListAddrs(addresses) {
-	let html = '<ol><li>';
-	html += addresses.map(element => {
-		return element.p2sh + ' - ' + element.bech32;
-	}).join('</li><li>');
-	html += '</li></ol>';
 	const tag = document.getElementById('addresses');
-	tag.innerHTML = html;
+	tag.innerHTML = addresses.map(element => {
+		return '\t' + element.p2sh + ' - ' + element.bech32;
+	}).join('\n') + '\n\n';
 }
