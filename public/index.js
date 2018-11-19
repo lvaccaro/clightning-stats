@@ -17,7 +17,7 @@ listconfigs(printConfigs);
 getinfo(printInfo);
 
 listpeers(peers => {
-	const aliasMap = {};
+	const nodeMap = {};
 	const channels = [];
 	let counter = peers.length;
 
@@ -30,11 +30,11 @@ listpeers(peers => {
 		}
 		listnode(p.id, node => {
 			--counter;
-			p.alias = node.alias;
-			aliasMap[node.nodeid] = p.alias;
+			p.node = node;
+			nodeMap[node.nodeid] = p.node;
 			if (counter === 0) {
 				channels.forEach(c => {
-					c.alias = aliasMap[c.id];
+					c.node = nodeMap[c.id];
 				});
 				printChannels(channels);
 				printPeers(peers);
@@ -155,7 +155,7 @@ function printPeers(peers) {
 	tag.innerHTML = '';
 	peers.forEach(p => {
 		tag.innerHTML += '\tnodeid: ' + p.id + '\n' +
-            ((p.alias) ? ('\talias: ' + p.alias + '\n') : '') +
+            ((p.node.alias) ? ('\talias: ' + p.node.alias + '\n') : '') +
             '\tconnected: ' + p.connected + '\n' +
             '\tstate: ' + ((p.state) ? p.state : 'NORMAL') + '\n' +
             '\tchannels: ' + ((p.channels) ? p.channels.length : 0) + '\n' +
@@ -185,7 +185,7 @@ function printChannels(channels) {
 		tag.innerHTML +=
             '\tchannelid: ' + ((c.short_channel_id) ? c.short_channel_id : '') + '\n' +
             '\tnodeid: ' + c.id + '\n' +
-            ((c.alias) ? ('\talias: ' + c.alias + '\n') : '') +
+            ((c.node.alias) ? ('\talias: ' + c.node.alias + '\n') : '') +
             '\tfunding_txid: ' + c.funding_txid + '\n' +
             '\tstate: ' + c.state + '\n' +
             '\tmsatoshi: ' + c.msatoshi_to_us + '/' + c.msatoshi_total + '\n' +
