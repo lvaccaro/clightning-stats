@@ -104,10 +104,14 @@ function printUrl(url) {
 	tag.innerHTML = url;
 }
 
+function printRGB(rgb) {
+	return 'rgb: ' + rgb + '&nbsp;<span style="background-color: #' + rgb + '; border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+}
+
 function printConfigs(configs) {
 	const tag = document.getElementById('configs');
 	tag.innerHTML = '\talias: ' + configs.alias + '\n' +
-        '\trgb: ' + configs.rgb + '&nbsp;<span style="background-color: #' + configs.rgb + '; border: 1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</span>\n' +
+        '\t' + printRGB(configs.rgb) + '\n' +
         '\tlocktime-blocks: ' + configs['locktime-blocks'] + '\n' +
         '\tcommit-fee: ' + configs['commit-fee'] + '\n' +
         '\tdefault-fee-rate: ' + configs['default-fee-rate'] + '\n' +
@@ -156,6 +160,7 @@ function printPeers(peers) {
 	peers.forEach(p => {
 		tag.innerHTML += '\tnodeid: ' + p.id + '\n' +
             ((p.node.alias) ? ('\talias: ' + p.node.alias + '\n') : '') +
+            '\t' + printRGB(p.node.color) + '\n' +
             '\tconnected: ' + p.connected + '\n' +
             '\tstate: ' + ((p.state) ? p.state : 'NORMAL') + '\n' +
             '\tchannels: ' + ((p.channels) ? p.channels.length : 0) + '\n' +
@@ -186,6 +191,7 @@ function printChannels(channels) {
             '\tchannelid: ' + ((c.short_channel_id) ? c.short_channel_id : '') + '\n' +
             '\tnodeid: ' + c.id + '\n' +
             ((c.node.alias) ? ('\talias: ' + c.node.alias + '\n') : '') +
+            '\t' + printRGB(c.node.color) + '\n' +
             '\tfunding_txid: ' + c.funding_txid + '\n' +
             '\tstate: ' + c.state + '\n' +
             '\tmsatoshi: ' + c.msatoshi_to_us + '/' + c.msatoshi_total + '\n' +
