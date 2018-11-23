@@ -3,6 +3,10 @@ const express = require('express');
 const router = express.Router(); // eslint-disable-line new-cap
 const LightningClient = require('lightning-client');
 
+const random = require('random-js');
+
+const engine = random.engines.mt19937().autoSeed();
+
 const client = new LightningClient(process.env.LIGHTNINGDIR || process.env.HOME + '/.lightning', true);
 
 /* GET home page. */
@@ -86,20 +90,11 @@ router.get('/listconfigs', (req, res, /* next */) => {
 		});
 });
 
-router.get('/dev-listaddrs', (req, res, /* next */) => {
-	client.devListaddrs()
-		.then(object => {
-			const wrapAddresses = {
-				addresses: object.addresses.map(address => {
-					// Avoid exposing pubkey, p2sh_redeemscript and bech32_redeemscript
-					return {
-						keyidx: address.keyidx,
-						p2sh: address.p2sh,
-						bech32: address.bech32
-					};
-				})
-			};
-			res.status(200).send(wrapAddresses);
+router.get('/create-any-invoice', (req, res, /* next */) => {
+	const uuid4 = random.uuid4(engine);
+	client.invoice('any', uuid4, 'create-any-invoice')
+		.then(invoice => {
+			res.status(200).send(invoice);
 		})
 		.catch(err => {
 			console.log({err});
