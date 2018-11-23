@@ -200,7 +200,18 @@ function printChannels(channels) {
 	});
 }
 
-function printCreateAnyInvoice(invoice) { // eslint-disable-line no-unused-vars
+function printCreateAnyInvoiceStringify(invoice) { // eslint-disable-line no-unused-vars
 	const tag = document.getElementById('donation');
 	tag.innerHTML = JSON.stringify(invoice, null, 8);
 }
+
+function printCreateAnyInvoice(invoiceWrapper) {
+	const tag = document.getElementById('donation');
+	tag.innerHTML = '\tinvoice:\n' +
+			'\t\tpayment_hash: ' + invoiceWrapper.invoice.payment_hash + '\n' +
+			'\t\texpires_at: ' + invoiceWrapper.invoice.expires_at + '\n' +
+			'\t\tbolt11: ' + invoiceWrapper.invoice.bolt11 + '\n' +
+			((invoiceWrapper.invoice.warning_capacity) ? ('\t\twarning_capacity: ' + invoiceWrapper.invoice.warning_capacity + '\n') : '') +
+		'\tuuid4: ' + invoiceWrapper.uuid4 + '\n\n';
+}
+
