@@ -2,6 +2,7 @@
 /* global document */
 /* global XMLHttpRequest */
 /* global window */
+/* global qrcode */
 
 // Configs
 if (!window.location.origin) {
@@ -213,4 +214,12 @@ function printCreateAnyInvoice(invoiceWrapper) {
 			'\t\tbolt11: ' + invoiceWrapper.invoice.bolt11 + '\n' +
 			((invoiceWrapper.invoice.warning_capacity) ? ('\t\twarning_capacity: ' + invoiceWrapper.invoice.warning_capacity + '\n') : '') +
 		'\tuuid4: ' + invoiceWrapper.uuid4 + '\n\n';
+	const qrdom = document.getElementById('id-qrcode');
+	const qr = qrcode(0, 'M');
+	qr.addData(invoiceWrapper.invoice.bolt11);
+	qr.make();
+
+	qrdom.innerHTML = qr.createImgTag();
+	qrdom.children[0].setAttribute('width', '230px');
+	qrdom.children[0].setAttribute('height', '230px');
 }
