@@ -220,6 +220,7 @@ function printCreateAnyInvoice(invoiceWrapper) {
 	qr.make();
 
 	qrdom.innerHTML = qr.createImgTag();
-	qrdom.children[0].setAttribute('width', '230px');
-	qrdom.children[0].setAttribute('height', '230px');
+	['width', 'height'].forEach(attribute => {
+		qrdom.children[0].setAttribute(attribute, '256');
+	});
 }
