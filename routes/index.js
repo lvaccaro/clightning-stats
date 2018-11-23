@@ -3,6 +3,10 @@ const express = require('express');
 const router = express.Router(); // eslint-disable-line new-cap
 const LightningClient = require('lightning-client');
 
+const random = require('random-js');
+
+const engine = random.engines.mt19937().autoSeed();
+
 const client = new LightningClient(process.env.LIGHTNINGDIR || process.env.HOME + '/.lightning', true);
 
 /* GET home page. */
@@ -79,6 +83,18 @@ router.get('/listconfigs', (req, res, /* next */) => {
 				}
 			});
 			res.status(200).send(configsRet);
+		})
+		.catch(err => {
+			console.log({err});
+			res.status(500);
+		});
+});
+
+router.get('/create-any-invoice', (req, res, /* next */) => {
+	const uuid4 = random.uuid4(engine);
+	client.invoice('any', uuid4, 'create-any-invoice')
+		.then(invoice => {
+			res.status(200).send({invoice, uuid4});
 		})
 		.catch(err => {
 			console.log({err});

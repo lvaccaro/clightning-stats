@@ -43,6 +43,8 @@ listpeers(peers => {
 	});
 });
 
+createanyinvoice(printCreateAnyInvoice);
+
 // Functions
 function simpleAyaxRequest(api, completion) {
 	const xhttp = new XMLHttpRequest();
@@ -64,6 +66,10 @@ function listconfigs(callback) {
 
 function getinfo(callback) {
 	simpleAyaxRequest('getinfo', callback);
+}
+
+function createanyinvoice(callback) {
+	simpleAyaxRequest('create-any-invoice', callback);
 }
 
 function simpleAyaxRequestUnwrap(api, unwrapper, callback) {
@@ -192,4 +198,19 @@ function printChannels(channels) {
             '\tto_self_delay: ' + c.to_self_delay + '\n' +
             '\tstatus:\n' + c.status.map(status => {return '\t\t' + status;}).join('\n') + '\n\n'; // eslint-disable-line brace-style
 	});
+}
+
+function printCreateAnyInvoiceStringify(invoice) { // eslint-disable-line no-unused-vars
+	const tag = document.getElementById('donation');
+	tag.innerHTML = JSON.stringify(invoice, null, 8);
+}
+
+function printCreateAnyInvoice(invoiceWrapper) {
+	const tag = document.getElementById('donation');
+	tag.innerHTML = '\tinvoice:\n' +
+			'\t\tpayment_hash: ' + invoiceWrapper.invoice.payment_hash + '\n' +
+			'\t\texpires_at: ' + invoiceWrapper.invoice.expires_at + '\n' +
+			'\t\tbolt11: ' + invoiceWrapper.invoice.bolt11 + '\n' +
+			((invoiceWrapper.invoice.warning_capacity) ? ('\t\twarning_capacity: ' + invoiceWrapper.invoice.warning_capacity + '\n') : '') +
+		'\tuuid4: ' + invoiceWrapper.uuid4 + '\n\n';
 }
