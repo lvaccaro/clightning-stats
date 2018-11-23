@@ -94,7 +94,7 @@ router.get('/create-any-invoice', (req, res, /* next */) => {
 	const uuid4 = random.uuid4(engine);
 	client.invoice('any', uuid4, 'create-any-invoice')
 		.then(invoice => {
-			res.status(200).send(invoice);
+			res.status(200).send({invoice, uuid4});
 		})
 		.catch(err => {
 			console.log({err});
