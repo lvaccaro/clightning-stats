@@ -43,8 +43,6 @@ listpeers(peers => {
 	});
 });
 
-devListAddrs(printDevListAddrs);
-
 // Functions
 function simpleAyaxRequest(api, completion) {
 	const xhttp = new XMLHttpRequest();
@@ -93,10 +91,6 @@ function listnodes(callback) { // eslint-disable-line no-unused-vars
 
 function listpeers(callback) {
 	simpleAyaxRequestUnwrap('listpeers', fieldUnwrapper('peers'), callback);
-}
-
-function devListAddrs(callback) {
-	simpleAyaxRequestUnwrap('dev-listaddrs', fieldUnwrapper('addresses'), callback);
 }
 
 function printUrl(url) {
@@ -198,10 +192,4 @@ function printChannels(channels) {
             '\tto_self_delay: ' + c.to_self_delay + '\n' +
             '\tstatus:\n' + c.status.map(status => {return '\t\t' + status;}).join('\n') + '\n\n'; // eslint-disable-line brace-style
 	});
-}
-function printDevListAddrs(addresses) {
-	const tag = document.getElementById('addresses');
-	tag.innerHTML = addresses.map(element => {
-		return '\t' + element.p2sh + ' - ' + element.bech32;
-	}).join('\n') + '\n\n';
 }

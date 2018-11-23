@@ -86,25 +86,4 @@ router.get('/listconfigs', (req, res, /* next */) => {
 		});
 });
 
-router.get('/dev-listaddrs', (req, res, /* next */) => {
-	client.devListaddrs()
-		.then(object => {
-			const wrapAddresses = {
-				addresses: object.addresses.map(address => {
-					// Avoid exposing pubkey, p2sh_redeemscript and bech32_redeemscript
-					return {
-						keyidx: address.keyidx,
-						p2sh: address.p2sh,
-						bech32: address.bech32
-					};
-				})
-			};
-			res.status(200).send(wrapAddresses);
-		})
-		.catch(err => {
-			console.log({err});
-			res.status(500);
-		});
-});
-
 module.exports = router;
