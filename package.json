@@ -34,5 +34,8 @@
     "lightning",
     "lightningnetworks",
     "bitcoin"
-  ]
+  ],
+  "xo": {
+      "ignore": "external"
+  }
 }
