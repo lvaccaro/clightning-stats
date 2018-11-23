@@ -43,6 +43,8 @@ listpeers(peers => {
 	});
 });
 
+createanyinvoice(printCreateAnyInvoice);
+
 // Functions
 function simpleAyaxRequest(api, completion) {
 	const xhttp = new XMLHttpRequest();
@@ -64,6 +66,10 @@ function listconfigs(callback) {
 
 function getinfo(callback) {
 	simpleAyaxRequest('getinfo', callback);
+}
+
+function createanyinvoice(callback) {
+	simpleAyaxRequest('create-any-invoice', callback);
 }
 
 function simpleAyaxRequestUnwrap(api, unwrapper, callback) {
@@ -192,4 +198,9 @@ function printChannels(channels) {
             '\tto_self_delay: ' + c.to_self_delay + '\n' +
             '\tstatus:\n' + c.status.map(status => {return '\t\t' + status;}).join('\n') + '\n\n'; // eslint-disable-line brace-style
 	});
+}
+
+function printCreateAnyInvoice(invoice) { // eslint-disable-line no-unused-vars
+	const tag = document.getElementById('donation');
+	tag.innerHTML = JSON.stringify(invoice, null, 8);
 }
