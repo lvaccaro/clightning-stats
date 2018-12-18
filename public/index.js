@@ -1,3 +1,5 @@
+/* eslint-disable capitalized-comments */
+
 'use strict';
 /* global document */
 /* global XMLHttpRequest */
@@ -164,8 +166,20 @@ function printPeers(peers) {
             '\t' + printRGB(p.node.color) + '\n' +
             '\tconnected: ' + p.connected + '\n' +
             '\tstate: ' + ((p.state) ? p.state : 'NORMAL') + '\n' +
-            '\tchannels: ' + ((p.channels) ? p.channels.length : 0) + '\n' +
-            '\tURI:\n' + p.netaddr.map(addr => {return '\t\t' + p.id + '@' + addr;}).join('\n') + '\n\n'; // eslint-disable-line brace-style
+            '\tchannels: ' + ((p.channels) ? p.channels.length : 0) + '\n';
+		/*
+		if (p.netaddr) {
+			tag.innerHTML += '\tURI:\n' + p.netaddr.map(addr => {
+				return '\t\t' + p.id + '@' + addr;
+			}).join('\n') + '\n';
+		}
+		*/
+		tag.innerHTML += '\taddresses:\n' + p.node.addresses.map(addr => {
+			return '\t\ttype: ' + addr.type + '\n' +
+			'\t\taddress: ' + addr.address + '\n' +
+			'\t\tport: ' + addr.port + '\n' +
+			'\t\tURI: ' + p.node.nodeid + '@' + addr.address + ':' + addr.port;
+		}).join('\n\n') + '\n\n';
 	});
 }
 
