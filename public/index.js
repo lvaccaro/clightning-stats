@@ -33,8 +33,10 @@ listpeers(peers => {
 		}
 		listnode(p.id, node => {
 			--counter;
-			p.node = node;
-			nodeMap[node.nodeid] = p.node;
+			if (node) {
+				p.node = node;
+				nodeMap[node.nodeid] = p.node;
+			}
 			if (counter === 0) {
 				channels.forEach(c => {
 					c.node = nodeMap[c.id];
@@ -162,24 +164,25 @@ function printPeers(peers) {
 	tag.innerHTML = '';
 	peers.forEach(p => {
 		tag.innerHTML += '\tnodeid: ' + p.id + '\n' +
-            ((p.node.alias) ? ('\talias: ' + p.node.alias + '\n') : '') +
-            '\t' + printRGB(p.node.color) + '\n' +
+            (p.node ? ((p.node.alias) ? ('\talias: ' + p.node.alias + '\n') : '') : '') +
+            '\t' + printRGB(p.node ? p.node.color : 'ffffff') + '\n' +
             '\tconnected: ' + p.connected + '\n' +
             '\tstate: ' + ((p.state) ? p.state : 'NORMAL') + '\n' +
             '\tchannels: ' + ((p.channels) ? p.channels.length : 0) + '\n';
-		/*
+
 		if (p.netaddr) {
 			tag.innerHTML += '\tURI:\n' + p.netaddr.map(addr => {
 				return '\t\t' + p.id + '@' + addr;
 			}).join('\n') + '\n';
 		}
-		*/
-		tag.innerHTML += '\taddresses:\n' + p.node.addresses.map(addr => {
-			return '\t\ttype: ' + addr.type + '\n' +
-			'\t\taddress: ' + addr.address + '\n' +
-			'\t\tport: ' + addr.port + '\n' +
-			'\t\tURI: ' + p.node.nodeid + '@' + addr.address + ':' + addr.port;
-		}).join('\n\n') + '\n\n';
+		if (p.node) {
+			tag.innerHTML += '\taddresses:\n' + p.node.addresses.map(addr => {
+				return '\t\ttype: ' + addr.type + '\n' +
+				'\t\taddress: ' + addr.address + '\n' +
+				'\t\tport: ' + addr.port + '\n' +
+				'\t\tURI: ' + p.node.nodeid + '@' + addr.address + ':' + addr.port;
+			}).join('\n\n') + '\n\n';
+		}
 	});
 }
 
@@ -205,8 +208,8 @@ function printChannels(channels) {
 		tag.innerHTML +=
             '\tchannelid: ' + ((c.short_channel_id) ? c.short_channel_id : '') + '\n' +
             '\tnodeid: ' + c.id + '\n' +
-            ((c.node.alias) ? ('\talias: ' + c.node.alias + '\n') : '') +
-            '\t' + printRGB(c.node.color) + '\n' +
+            (c.node ? ((c.node.alias) ? ('\talias: ' + c.node.alias + '\n') : '') : '') +
+            '\t' + printRGB(c.node ? c.node.color : 'ffffff') + '\n' +
             '\tfunding_txid: ' + c.funding_txid + '\n' +
             '\tstate: ' + c.state + '\n' +
             '\tmsatoshi: ' + c.msatoshi_to_us + '/' + c.msatoshi_total + '\n' +
